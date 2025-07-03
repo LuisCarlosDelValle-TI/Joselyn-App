@@ -48,4 +48,14 @@
         android:text="Login"
         android:layout_marginTop="24dp"/>
 
+    <Button
+        android:id="@+id/buttonRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Regístrate"
+        android:background="@android:color/transparent"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:textColor="@color/white"/>
+
 </LinearLayout>
