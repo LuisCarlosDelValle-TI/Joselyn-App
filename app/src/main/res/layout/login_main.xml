@@ -7,6 +7,20 @@
     android:padding="24dp"
     android:gravity="center">
 
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="-150dp"
+        android:contentDescription="@string/logo_description"
+        android:src="@drawable/logo" />
+
+    <ImageView
+        android:layout_width="400dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="15dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/nombre" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,33 +29,32 @@
         android:textStyle="bold"
         android:layout_marginBottom="32dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
+   <EditText
+        android:id="@+id/etUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:inputType="textPersonName"
+        android:hint="Nombre de usuario"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:background="@drawable/edittext"
+        android:layout_marginBottom="16dp"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etUsername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nombre de usuario" />
 
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+  <EditText
+        android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        app:passwordToggleEnabled="true">
+        app:passwordToggleEnabled="true"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:background="@drawable/edittext"
+        android:layout_marginBottom="24dp"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Contraseña"
-            android:inputType="textPassword" />
 
-    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnLogin"
@@ -50,13 +63,14 @@
         android:text="Iniciar Sesión"
         android:layout_marginBottom="16dp" />
 
-    <!-- res/layout/login_main.xml -->
+
     <Button
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Registrarse"
-        android:layout_gravity="center"/>
+        android:text="No tienes cuenta? Registrate"
+        android:layout_gravity="center"
+        android:backgroundTint="@android:color/holo_blue_light"/>
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"

@@ -13,7 +13,6 @@
         android:text="Registro"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="@android:color/black"
         android:layout_marginBottom="32dp"/>
 
     <EditText
@@ -26,27 +25,28 @@
         android:textColorHint="@android:color/darker_gray"
         android:background="@drawable/edittext"/>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <EditText
+        android:id="@+id/etApellidoPaterno"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etApellidoPaterno"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Apellido Paterno" />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:hint="Apellido Paterno"
+        android:inputType="text"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:background="@drawable/edittext"
+        android:layout_marginTop="16dp"/>
 
-    <com.google.android.material.textfield.TextInputLayout
+
+   <EditText
+       android:id="@+id/etApellidoMaterno"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etApellidoMaterno"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Apellido Materno" />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:hint="Apellido Materno"
+        android:inputType="text"
+        android:textColor="@android:color/black"
+       android:textColorHint="@android:color/darker_gray"
+       android:background="@drawable/edittext"
+       android:layout_marginTop="16dp"/>
 
     <EditText
         android:id="@+id/editTextUsername"
@@ -59,29 +59,29 @@
         android:background="@drawable/edittext"
         android:layout_marginTop="16dp"/>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <EditText
+        android:id="@+id/etCorreo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etCorreo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Correo electrónico"
-            android:inputType="textEmailAddress" />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:hint="Correo electrónico"
+        android:inputType="textEmailAddress"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:background="@drawable/edittext"
+        android:layout_marginTop="16dp"/>
 
-    <com.google.android.material.textfield.TextInputLayout
+
+    <EditText
+        android:id="@+id/etTelefono"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etTelefono"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Teléfono"
-            android:inputType="phone" />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:hint="Teléfono"
+        android:inputType="phone"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:background="@drawable/edittext"
+        android:layout_marginTop="16dp"/>
+
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -99,11 +99,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Registrarse"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginTop="16dp" />
     <Button
         android:id="@+id/btnGoToLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="¿Ya tienes cuenta? Inicia sesión"
-        android:layout_marginBottom="16dp" />
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:layout_marginTop="16dp" />
 </LinearLayout>

@@ -4,9 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.joytec.R;
 import com.example.joytec.repository.AuthRepository;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView tvWelcome;
@@ -20,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
         authRepository = new AuthRepository(this);
 
-        // Verificar si está logueado
         if (!authRepository.isLoggedIn()) {
             goToLoginActivity();
             return;
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
         setupUserInfo();
+        probarApi(); // Llama aquí para probar tu API al iniciar la app
     }
 
     private void initViews() {
@@ -51,5 +56,25 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    // Método para probar tu API
+    private void probarApi() {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("http://192.168.1.52:3001") // Cambia por la URL de tu API
+                .build();
+
+        new Thread(() -> {
+            try (Response response = client.newCall(request).execute()) {
+                if (!response.isSuccessful()) {
+                    Log.e("API_TEST", "Error: " + response.code());
+                } else {
+                    Log.d("API_TEST", "Respuesta: " + response.body().string());
+                }
+            } catch (Exception e) {
+                Log.e("API_TEST", "Excepción: " + e.getMessage());
+            }
+        }).start();
     }
 }
