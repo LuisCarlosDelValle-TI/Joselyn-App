@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
         setupUserInfo();
-        probarApi(); // Llama aquí para probar tu API al iniciar la app
+        probarApi();
     }
 
     private void initViews() {

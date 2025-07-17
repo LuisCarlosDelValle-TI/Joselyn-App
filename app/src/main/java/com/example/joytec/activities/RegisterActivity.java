@@ -1,119 +1,89 @@
 package com.example.joytec.activities;
-import android.content.Intent;
+
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.content.Intent;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.joytec.R;
-import com.example.joytec.models.Usuario;
-import com.example.joytec.repository.AuthRepository;
+import com.example.joytec.api.AuthApiService;
+import com.example.joytec.models.RegistroRequest;
+import com.example.joytec.models.RegistroResponse;
+import retrofit2.*;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText etUsername, etApellidoPaterno, etApellidoMaterno,
-            etCorreo, etPassword, etTelefono;
+    private EditText etNombreUsuario, etCorreo, etContrasena, etConfirmarContrasena, etIdEmpleado;
     private Button btnRegister, btnGoToLogin;
-    private ProgressBar progressBar;
-    private AuthRepository authRepository;
+    private AuthApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.registro_main);
+        setContentView(R.layout.activity_register);
 
-        // Inicializar repository
-        authRepository = new AuthRepository(this);
-
-        initViews();
-        setupListeners();
-    }
-
-    private void initViews() {
-        etUsername = findViewById(R.id.etUsername);
-        etApellidoPaterno = findViewById(R.id.etApellidoPaterno);
-        etApellidoMaterno = findViewById(R.id.etApellidoMaterno);
+        etNombreUsuario = findViewById(R.id.etNombreUsuario);
         etCorreo = findViewById(R.id.etCorreo);
-        etPassword = findViewById(R.id.etPassword);
-        etTelefono = findViewById(R.id.etTelefono);
+        etContrasena = findViewById(R.id.etContrasena);
+        etConfirmarContrasena = findViewById(R.id.etConfirmarContrasena);
+        etIdEmpleado = findViewById(R.id.etIdEmpleado);
         btnRegister = findViewById(R.id.btnRegister);
         btnGoToLogin = findViewById(R.id.btnGoToLogin);
-        progressBar = findViewById(R.id.progressBar);
-    }
 
-    private void setupListeners() {
-        btnRegister.setOnClickListener(v -> {
-            if (validateFields()) {
-                registrar();
-            }
-        });
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.52:3001/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        apiService = retrofit.create(AuthApiService.class);
+
+        btnRegister.setOnClickListener(v -> registrarUsuario());
 
         btnGoToLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
             finish();
         });
     }
 
-    private boolean validateFields() {
-        String username = etUsername.getText().toString().trim();
-        String apellidoPaterno = etApellidoPaterno.getText().toString().trim();
-        String apellidoMaterno = etApellidoMaterno.getText().toString().trim();
+    private void registrarUsuario() {
+        String nombre = etNombreUsuario.getText().toString().trim();
         String correo = etCorreo.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
-        String telefono = etTelefono.getText().toString().trim();
+        String contrasena = etContrasena.getText().toString().trim();
+        String confirmar = etConfirmarContrasena.getText().toString().trim();
+        String idEmpleadoStr = etIdEmpleado.getText().toString().trim();
 
-        if (username.isEmpty() || apellidoPaterno.isEmpty() || apellidoMaterno.isEmpty() ||
-                correo.isEmpty() || password.isEmpty() || telefono.isEmpty()) {
-            Toast.makeText(this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show();
-            return false;
+        if (nombre.isEmpty() || correo.isEmpty() || contrasena.isEmpty() || confirmar.isEmpty()) {
+            Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        if (password.length() < 6) {
-            Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show();
-            return false;
+        if (!contrasena.equals(confirmar)) {
+            Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        return true;
-    }
+        Integer idEmpleado = idEmpleadoStr.isEmpty() ? null : Integer.parseInt(idEmpleadoStr);
 
-    private void registrar() {
-        showLoading(true);
+        RegistroRequest request = new RegistroRequest(nombre, contrasena, correo, idEmpleado);
 
-        String username = etUsername.getText().toString().trim();
-        String apellidoPaterno = etApellidoPaterno.getText().toString().trim();
-        String apellidoMaterno = etApellidoMaterno.getText().toString().trim();
-        String correo = etCorreo.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
-        String telefono = etTelefono.getText().toString().trim();
-
-        Usuario usuario = new Usuario(username, apellidoPaterno, apellidoMaterno,
-                correo, password, telefono, "usuario");
-
-        authRepository.registrar(usuario, new AuthRepository.AuthCallback() {
+        Call<RegistroResponse> call = apiService.registrar(request);
+        call.enqueue(new Callback<RegistroResponse>() {
             @Override
-            public void onSuccess(String message) {
-                showLoading(false);
-                Toast.makeText(RegisterActivity.this,
-                        "Registro exitoso. Iniciando sesión...",
-                        Toast.LENGTH_SHORT).show();
-
-                // Ir a MainActivity ya que el registro automáticamente loguea
-                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+            public void onResponse(Call<RegistroResponse> call, Response<RegistroResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(RegisterActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                    finish();
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Error: el usuario ya existe o la solicitud es inválida", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
-            public void onError(String error) {
-                showLoading(false);
-                Toast.makeText(RegisterActivity.this, "Error: " + error, Toast.LENGTH_LONG).show();
+            public void onFailure(Call<RegistroResponse> call, Throwable t) {
+                Toast.makeText(RegisterActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    private void showLoading(boolean show) {
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        btnRegister.setEnabled(!show);
-        btnGoToLogin.setEnabled(!show);
     }
 }

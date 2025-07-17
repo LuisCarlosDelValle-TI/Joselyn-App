@@ -3,96 +3,88 @@ package com.example.joytec.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.joytec.R;
+import com.example.joytec.api.AuthApiService;
+import com.example.joytec.models.LoginRequest;
 import com.example.joytec.models.LoginResponse;
-import com.example.joytec.repository.AuthRepository;
+import retrofit2.*;
+
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etUsername, etPassword;
-    private Button btnLogin, btnGoToRegister;
+    private Button btnLogin, buttonRegister;
     private ProgressBar progressBar;
-    private AuthRepository authRepository;
+    private AuthApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_main);
+        setContentView(R.layout.activity_login);
 
-        // Inicializar repository
-        authRepository = new AuthRepository(this);
-
-        // Verificar si ya está logueado
-        if (authRepository.isLoggedIn()) {
-            goToMainActivity();
-            return;
-        }
-
-        initViews();
-        setupListeners();
-    }
-
-    private void initViews() {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        btnGoToRegister = findViewById(R.id.buttonRegister);
+        buttonRegister = findViewById(R.id.buttonRegister);
         progressBar = findViewById(R.id.progressBar);
-    }
 
-    private void setupListeners() {
-        btnLogin.setOnClickListener(v -> {
-            String username = etUsername.getText().toString().trim();
-            String password = etPassword.getText().toString().trim();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.52:3001/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        apiService = retrofit.create(AuthApiService.class);
 
-            login(username, password);
-        });
+        btnLogin.setOnClickListener(v -> iniciarSesion());
 
-        btnGoToRegister.setOnClickListener(v -> {
+        buttonRegister.setOnClickListener(v -> {
+            // Aquí puedes abrir la pantalla de registro si ya la tienes
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
     }
 
-    private void login(String username, String password) {
-        showLoading(true);
+    private void iniciarSesion() {
+        String usuario = etUsername.getText().toString().trim();
+        String contrasena = etPassword.getText().toString().trim();
 
-        authRepository.login(username, password, new AuthRepository.LoginCallback() {
+        if (usuario.isEmpty() || contrasena.isEmpty()) {
+            Toast.makeText(this, "Rellena todos los campos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+        btnLogin.setEnabled(false);
+
+        LoginRequest request = new LoginRequest(usuario, contrasena);
+
+        Call<LoginResponse> call = apiService.login(request);
+        call.enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onSuccess(LoginResponse response) {
-                showLoading(false);
-                Toast.makeText(LoginActivity.this,
-                        "Bienvenido " + response.getData().getUsuario().getUsername(),
-                        Toast.LENGTH_SHORT).show();
-                goToMainActivity();
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                progressBar.setVisibility(View.GONE);
+                btnLogin.setEnabled(true);
+
+                if (response.isSuccessful()) {
+                    Toast.makeText(LoginActivity.this, "¡Bienvenido!", Toast.LENGTH_SHORT).show();
+                    // Redirigir al dashboard
+                    Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
-            public void onError(String error) {
-                showLoading(false);
-                Toast.makeText(LoginActivity.this, "Error: " + error, Toast.LENGTH_LONG).show();
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                btnLogin.setEnabled(true);
+                Toast.makeText(LoginActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void showLoading(boolean show) {
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        btnLogin.setEnabled(!show);
-        btnGoToRegister.setEnabled(!show);
-    }
-
-    private void goToMainActivity() {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 }

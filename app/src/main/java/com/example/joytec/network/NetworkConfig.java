@@ -36,7 +36,7 @@ public class NetworkConfig {
 
             // Retrofit
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl("192.168.1.52:3001/api/")
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

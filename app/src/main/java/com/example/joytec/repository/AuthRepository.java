@@ -2,6 +2,7 @@
 package com.example.joytec.repository;
 
 import com.example.joytec.models.Usuario;
+import com.example.joytec.models.RegistroRequest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.example.joytec.models.LoginResponse;
@@ -35,7 +36,6 @@ public class AuthRepository {
     public void clearUserData() {
         sharedPreferences.edit().clear().apply();
     }
-    // Método login simulado (debes reemplazarlo por la llamada real a la API)
     public void login(String username, String password, LoginCallback callback) {
         // Aquí deberías hacer la llamada a la API, esto es solo un ejemplo simulado:
         if ("admin".equals(username) && "admin".equals(password)) {
@@ -60,11 +60,19 @@ public class AuthRepository {
     }
     // AuthRepository.java
     public void registrar(Usuario usuario, AuthCallback callback) {
-        // Llama a tu API usando Retrofit
         AuthApiService apiService = ApiClient.getClient().create(AuthApiService.class);
-        Call<RegistroResponse> call = apiService.registrar(usuario);
 
-        call.enqueue(new retrofit2.Callback<RegistroResponse>() {
+        // Convertimos Usuario a RegistroRequest
+        RegistroRequest request = new RegistroRequest(
+                usuario.getUsername(),
+                usuario.getPassword(),
+                usuario.getCorreo(),
+                null
+        );
+
+        Call<RegistroResponse> call = apiService.registrar(request);
+
+        call.enqueue(new Callback<RegistroResponse>() {
             @Override
             public void onResponse(Call<RegistroResponse> call, Response<RegistroResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

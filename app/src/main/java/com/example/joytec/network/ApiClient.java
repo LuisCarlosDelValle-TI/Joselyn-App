@@ -4,7 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private static final String BASE_URL = "https://tudominio.com/api/"; // Cambia la URL base
+    private static final String BASE_URL = "http://192.168.1.52:3001/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {

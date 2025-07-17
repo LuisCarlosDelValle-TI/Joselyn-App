@@ -1,14 +1,18 @@
 package com.example.joytec.models;
 
 public class LoginRequest {
-    private String username;
-    private String password;
+    private String nombre_usuario;
+    private String contraseña;
 
-    public LoginRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public LoginRequest(String nombre_usuario, String contraseña) {
+        this.nombre_usuario = nombre_usuario;
+        this.contraseña = contraseña;
     }
 
-    public String getUsername() { return username; }
-    public String getPassword() { return password; }
+    // Getters y Setters
+    public String getNombre_usuario() { return nombre_usuario; }
+    public void setNombre_usuario(String nombre_usuario) { this.nombre_usuario = nombre_usuario; }
+
+    public String getContraseña() { return contraseña; }
+    public void setContraseña(String contraseña) { this.contraseña = contraseña; }
 }
