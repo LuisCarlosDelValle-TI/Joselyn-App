@@ -31,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnGoToLogin = findViewById(R.id.btnGoToLogin);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.52:3001/api/")
+                .baseUrl("http://192.168.10.15:3001/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.joytec.activities.ProductosActivity;
 import com.example.joytec.R;
 import com.example.joytec.api.AuthApiService;
 import com.example.joytec.models.LoginRequest;
@@ -31,8 +33,17 @@ public class LoginActivity extends AppCompatActivity {
         buttonRegister = findViewById(R.id.buttonRegister);
         progressBar = findViewById(R.id.progressBar);
 
+        btnLogin = findViewById(R.id.btnLogin);
+
+        btnLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ProductosActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
+
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.52:3001/api/")
+                .baseUrl("http://192.168.10.15:3001/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -40,8 +51,9 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin.setOnClickListener(v -> iniciarSesion());
 
+
         buttonRegister.setOnClickListener(v -> {
-            // Aquí puedes abrir la pantalla de registro si ya la tienes
+
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
@@ -70,8 +82,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     Toast.makeText(LoginActivity.this, "¡Bienvenido!", Toast.LENGTH_SHORT).show();
-                    // Redirigir al dashboard
-                    Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                    // Redirige al dashboard
+                    Intent intent = new Intent(LoginActivity.this, ProductosActivity.class);
                     startActivity(intent);
                     finish();
                 } else {

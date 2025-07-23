@@ -58,11 +58,10 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    // Método para probar tu API
     private void probarApi() {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("http://192.168.1.52:3001") // Cambia por la URL de tu API
+                .url("192.168.10.15:3001")
                 .build();
 
         new Thread(() -> {
