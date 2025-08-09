@@ -19,4 +19,10 @@ public interface ApiService {
 
     @POST("/api/productos")
     Call<Producto> crearProducto(@Body Producto producto);
+
+    @GET("/api/productos/{id}")
+    Call<Producto> getProductoById(@Path("id") int id);
+
+    @PUT("/api/productos/{id}")
+    Call<Producto> actualizarProducto(@Path("id") int id, @Body Producto producto);
 }

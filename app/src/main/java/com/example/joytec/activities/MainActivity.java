@@ -20,7 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements ProductoAdapter.OnItemClickListener { // 1. Implementa la interfaz
+public class MainActivity extends AppCompatActivity implements ProductoAdapter.OnItemClickListener {
 
     private RecyclerView recyclerViewProductos;
     private ProductoAdapter adapter;
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements ProductoAdapter.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); // Asegúrate de que este es el layout correcto
+        setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements ProductoAdapter.O
             public void onResponse(Call<List<Producto>> call, Response<List<Producto>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Producto> productosList = response.body();
-                    // 2. Pasa 'this' como el OnItemClickListener
+
                     adapter = new ProductoAdapter(productosList, MainActivity.this);
                     recyclerViewProductos.setAdapter(adapter);
                 } else {
@@ -69,12 +69,11 @@ public class MainActivity extends AppCompatActivity implements ProductoAdapter.O
         });
     }
 
-    // 3. Implementa el método de la interfaz para manejar el clic en eliminar
+
     @Override
     public void onEliminarClick(Producto producto) {
-        // Por ahora, solo muestra un mensaje de confirmación
+
         Toast.makeText(this, "Eliminar producto: " + producto.getNombre(), Toast.LENGTH_SHORT).show();
-        // Aquí debes agregar la lógica para llamar a la API y eliminar el producto
-        // como te mostré en la respuesta anterior para ProductosActivity.
+
     }
 }

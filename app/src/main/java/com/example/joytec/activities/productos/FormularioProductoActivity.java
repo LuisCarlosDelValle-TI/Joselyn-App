@@ -25,15 +25,15 @@ import retrofit2.Response;
 
 public class FormularioProductoActivity extends AppCompatActivity {
 
-    private EditText etNombre, etPrecio, etStockMinimo, etExistencias;
+    private EditText etNombre, etPrecio, etStock, etExistencias;
     private Spinner spnCategoria, spnMaterial;
     private Button btnGuardar;
     private ApiService apiService;
 
-    // Lista de categorías precargada manualmente
+
     private List<Categoria> categoriasList = new ArrayList<>();
 
-    // Lista de materiales precargada manualmente
+
     private List<String> nombresMateriales = new ArrayList<>();
 
     @Override
@@ -45,19 +45,19 @@ public class FormularioProductoActivity extends AppCompatActivity {
 
         etNombre = findViewById(R.id.etNombre);
         etPrecio = findViewById(R.id.etPrecio);
-        etStockMinimo = findViewById(R.id.etStockMinimo);
+        etStock = findViewById(R.id.etStock);
         etExistencias = findViewById(R.id.etExistencias);
         spnCategoria = findViewById(R.id.spnCategoria);
         spnMaterial = findViewById(R.id.spnMaterial);
         btnGuardar = findViewById(R.id.btnGuardar);
 
-        // Pre-carga los datos de la lista de categorías aquí
+
         categoriasList.add(new Categoria(1, "Anillo"));
         categoriasList.add(new Categoria(2, "Pulsera"));
         categoriasList.add(new Categoria(3, "Collar"));
         categoriasList.add(new Categoria(4, "Arete"));
 
-        // Llena el Spinner de categorías con la lista predefinida
+
         List<String> nombresCategorias = new ArrayList<>();
         for (Categoria categoria : categoriasList) {
             nombresCategorias.add(categoria.getNombre_categoria());
@@ -67,13 +67,13 @@ public class FormularioProductoActivity extends AppCompatActivity {
         adapterCategorias.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnCategoria.setAdapter(adapterCategorias);
 
-        // Pre-carga los datos de la lista de materiales aquí
+
         nombresMateriales.add("Plata");
         nombresMateriales.add("Oro");
         nombresMateriales.add("Acero");
         nombresMateriales.add("Titanio");
 
-        // Llena el Spinner de materiales con la lista predefinida
+
         ArrayAdapter<String> adapterMateriales = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, nombresMateriales);
         adapterMateriales.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -88,7 +88,7 @@ public class FormularioProductoActivity extends AppCompatActivity {
     }
 
     private void guardarProducto() {
-        // Validar que los campos no estén vacíos
+
         if (etNombre.getText().toString().isEmpty() || etPrecio.getText().toString().isEmpty()) {
             Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
@@ -96,20 +96,18 @@ public class FormularioProductoActivity extends AppCompatActivity {
 
         String nombre = etNombre.getText().toString();
         double precio = Double.parseDouble(etPrecio.getText().toString());
-        int stockMinimo = Integer.parseInt(etStockMinimo.getText().toString());
+        int stock = Integer.parseInt(etStock.getText().toString());
         int existencias = Integer.parseInt(etExistencias.getText().toString());
-
-        // Obtener la categoría seleccionada
         int selectedCategoriaPosition = spnCategoria.getSelectedItemPosition();
         int idCategoria = categoriasList.get(selectedCategoriaPosition).getId_categoria();
 
-        // Obtener el nombre del material seleccionado del Spinner
+
         String nombreMaterial = spnMaterial.getSelectedItem().toString();
 
         Producto nuevoProducto = new Producto();
         nuevoProducto.setNombre(nombre);
         nuevoProducto.setPrecio(precio);
-        nuevoProducto.setStock_minimo(stockMinimo);
+        nuevoProducto.setStock(stock);
         nuevoProducto.setExistencias(existencias);
         nuevoProducto.setId_categoria(idCategoria);
         nuevoProducto.setNombre_material(nombreMaterial);

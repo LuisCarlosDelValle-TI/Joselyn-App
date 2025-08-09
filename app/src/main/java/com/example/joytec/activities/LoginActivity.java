@@ -8,10 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.joytec.R;
 import com.example.joytec.activities.productos.ProductosActivity;
-import com.example.joytec.api.AuthApiService;
+import com.example.joytec.network.ApiClient;
 import com.example.joytec.models.LoginRequest;
 import com.example.joytec.models.LoginResponse;
-import com.example.joytec.repository.AuthRepository; // AGREGAR ESTA IMPORTACIÓN
+import com.example.joytec.network.AuthApiService;
+import com.example.joytec.repository.AuthRepository;
 import retrofit2.*;
 
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -22,17 +23,17 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin, buttonRegister;
     private ProgressBar progressBar;
     private AuthApiService apiService;
-    private AuthRepository authRepository; // AGREGAR ESTA LÍNEA
+    private AuthRepository authRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // AGREGAR ESTA LÍNEA
+
         authRepository = new AuthRepository(this);
 
-        // Si ya está logueado, ir directo al MainActivity
+
         if (authRepository.isLoggedIn()) {
             Intent intent = new Intent(LoginActivity.this, ProductosActivity.class);
             startActivity(intent);
@@ -47,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.52:3001/api/")
+                .baseUrl("http://10.0.249.178:3001/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(v -> iniciarSesion());
 
         buttonRegister.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, ProductosActivity.class);
+            Intent intent = new Intent(LoginActivity.this, RegistroActivity.class);
             startActivity(intent);
         });
     }
@@ -85,16 +86,16 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
 
-                    // GUARDAR LOS DATOS DEL USUARIO
+
                     authRepository.saveUserData(
                             loginResponse.getToken() != null ? loginResponse.getToken() : "default_token",
-                            usuario, // El username que ingresó el usuario
-                            loginResponse.getRol() != null ? loginResponse.getRol() : "user" // Rol por defecto si no viene
+                            usuario,
+                            loginResponse.getRol() != null ? loginResponse.getRol() : "user"
                     );
 
                     Toast.makeText(LoginActivity.this, "¡Bienvenido!", Toast.LENGTH_SHORT).show();
 
-                    // Redirige al dashboard
+
                     Intent intent = new Intent(LoginActivity.this, ProductosActivity.class);
                     startActivity(intent);
                     finish();

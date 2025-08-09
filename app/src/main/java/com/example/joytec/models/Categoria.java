@@ -10,17 +10,17 @@ public class Categoria {
     @SerializedName("nombre_categoria")
     private String nombre_categoria;
 
-    // Constructor vacío (necesario para Retrofit)
+
     public Categoria() {
     }
 
-    // Constructor con parámetros (opcional, pero útil)
+
     public Categoria(int id_categoria, String nombre_categoria) {
         this.id_categoria = id_categoria;
         this.nombre_categoria = nombre_categoria;
     }
 
-    // Getters y Setters
+
     public int getId_categoria() {
         return id_categoria;
     }

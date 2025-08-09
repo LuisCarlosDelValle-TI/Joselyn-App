@@ -4,8 +4,9 @@ public class Producto {
 
         private int id_producto;
         private String nombre;
+        private String descripcion;
         private double precio;
-        private int stock_minimo;
+        private int stock;
         private int existencias;
         private int id_categoria;
         private String nombre_categoria;
@@ -27,6 +28,13 @@ public class Producto {
                 this.nombre = nombre;
         }
 
+        public String getDescripcion() {
+                return descripcion;
+        }
+
+        public void setDescripcion(String descripcion) {
+                this.descripcion = descripcion;
+        }
         public double getPrecio() {
                 return precio;
         }
@@ -35,12 +43,12 @@ public class Producto {
                 this.precio = precio;
         }
 
-        public int getStock_minimo() {
-                return stock_minimo;
+        public int getStock() {
+                return stock;
         }
 
-        public void setStock_minimo(int stock_minimo) {
-                this.stock_minimo = stock_minimo;
+        public void setStock(int stock) {
+                this.stock = stock;
         }
 
         public int getExistencias() {

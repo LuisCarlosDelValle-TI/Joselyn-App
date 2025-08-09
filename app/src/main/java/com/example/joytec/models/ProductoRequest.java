@@ -1,8 +1,7 @@
 package com.example.joytec.models;
 
 public class ProductoRequest {
-    // No se necesita para una petición GET, pero aquí está el código
-    // si lo necesitas para peticiones POST o PUT.
+
 
     private String nombre;
     private double precio;

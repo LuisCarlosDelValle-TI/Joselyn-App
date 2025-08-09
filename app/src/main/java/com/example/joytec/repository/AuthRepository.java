@@ -5,7 +5,7 @@ import com.example.joytec.models.RegistroRequest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.example.joytec.models.LoginResponse;
-import com.example.joytec.api.AuthApiService;
+import com.example.joytec.network.AuthApiService;
 import com.example.joytec.network.ApiClient;
 import retrofit2.Call;
 import retrofit2.Callback;

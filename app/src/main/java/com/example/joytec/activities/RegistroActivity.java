@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.joytec.R;
-import com.example.joytec.api.AuthApiService;
+import com.example.joytec.network.AuthApiService;
 import com.example.joytec.models.RegistroRequest;
 import com.example.joytec.models.RegistroResponse;
 import retrofit2.*;
@@ -31,7 +31,7 @@ public class RegistroActivity extends AppCompatActivity {
         btnGoToLogin = findViewById(R.id.btnGoToLogin);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.52:3001/api/")
+                .baseUrl("http://10.0.249.178:3001/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

@@ -1,16 +1,17 @@
 package com.example.joytec.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.joytec.R;
+import com.example.joytec.activities.productos.EditarProductoActivity; // Importa la nueva actividad
 import com.example.joytec.models.Producto;
 
 import java.util.List;
@@ -20,12 +21,10 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.Produc
     private List<Producto> productosList;
     private final OnItemClickListener listener;
 
-    // Interfaz para manejar clics en el botón de eliminar
     public interface OnItemClickListener {
         void onEliminarClick(Producto producto);
     }
 
-    // Constructor que ahora recibe el listener
     public ProductoAdapter(List<Producto> productosList, OnItemClickListener listener) {
         this.productosList = productosList;
         this.listener = listener;
@@ -46,10 +45,12 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.Produc
         holder.textViewCategoria.setText("Categoría: " + producto.getNombre_categoria());
 
         holder.buttonVerDetalle.setOnClickListener(v -> {
-            Toast.makeText(v.getContext(), "Ver detalle de: " + producto.getNombre(), Toast.LENGTH_SHORT).show();
+            Context context = v.getContext();
+            Intent intent = new Intent(context, EditarProductoActivity.class);
+            intent.putExtra("PRODUCTO_ID", producto.getId_producto());
+            context.startActivity(intent);
         });
 
-        // Llama al método de la interfaz cuando se hace clic en el botón
         holder.buttonEliminar.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onEliminarClick(producto);

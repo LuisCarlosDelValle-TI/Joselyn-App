@@ -9,7 +9,7 @@ public class Usuario {
     private String telefono;
     private String rol;
 
-    // Constructor para registro
+
     public Usuario(String username, String apellidoPaterno, String apellidoMaterno,
                    String correo, String password, String telefono, String rol) {
         this.username = username;
@@ -21,7 +21,7 @@ public class Usuario {
         this.rol = rol;
     }
 
-    // Getters y setters
+
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
 

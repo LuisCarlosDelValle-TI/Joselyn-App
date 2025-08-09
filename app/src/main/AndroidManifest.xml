@@ -19,7 +19,7 @@
 
 
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".activities.productos.ProductosActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,8 +32,8 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="false" />
 
-        <activity android:name=".activities.productos.ProductosActivity" />
         <activity android:name=".activities.productos.FormularioProductoActivity" />
+        <activity android:name=".activities.productos.EditarProductoActivity" />
     </application>
 
 </manifest>

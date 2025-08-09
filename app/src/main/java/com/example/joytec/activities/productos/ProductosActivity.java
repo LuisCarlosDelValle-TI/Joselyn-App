@@ -45,7 +45,7 @@ public class ProductosActivity extends AppCompatActivity implements ProductoAdap
         recyclerViewProductos = findViewById(R.id.recyclerViewProductos);
         recyclerViewProductos.setLayoutManager(new LinearLayoutManager(this));
 
-        // Inicializa el FAB y su listener para ir al formulario de registro
+
         fabAddProduct = findViewById(R.id.fabAddProduct);
         fabAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +63,7 @@ public class ProductosActivity extends AppCompatActivity implements ProductoAdap
     @Override
     protected void onResume() {
         super.onResume();
-        fetchProductos(); // Vuelve a cargar la lista cada vez que se regresa a la actividad
+        fetchProductos();
     }
 
     private void fetchProductos() {
@@ -111,7 +111,7 @@ public class ProductosActivity extends AppCompatActivity implements ProductoAdap
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(ProductosActivity.this, "Producto eliminado correctamente", Toast.LENGTH_SHORT).show();
-                    // Vuelve a cargar la lista para actualizar el RecyclerView
+
                     fetchProductos();
                 } else {
                     Toast.makeText(ProductosActivity.this, "Error al eliminar el producto", Toast.LENGTH_SHORT).show();

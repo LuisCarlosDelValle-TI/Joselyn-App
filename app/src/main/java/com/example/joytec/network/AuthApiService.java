@@ -1,6 +1,6 @@
-package com.example.joytec.api;
+package com.example.joytec.network;
 
-import com.example.joytec.models.Usuario;
+
 import com.example.joytec.models.LoginRequest;
 import com.example.joytec.models.LoginResponse;
 import com.example.joytec.models.RegistroResponse;
@@ -11,9 +11,9 @@ import retrofit2.http.POST;
 
 public interface AuthApiService {
 
-    @POST("auth/registrar")  // Ruta para registro
+    @POST("auth/registrar")
     Call<RegistroResponse> registrar(@Body RegistroRequest request);
 
-    @POST("auth/login")      // Ruta para login
-    Call<LoginResponse> login(@Body LoginRequest request);
+    @POST("auth/login")
+    Call<LoginResponse> login(@Body LoginRequest loginRequest);
 }

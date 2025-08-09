@@ -10,11 +10,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     private static Retrofit retrofit;
-    private static final String BASE_URL = "http://192.168.1.52:3001/";
+    private static final String BASE_URL = "http://10.0.249.178:3001/";
 
     public static Retrofit getClient() {
         if (retrofit == null) {
-            // Interceptor para logging (útil para debug)
+
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
