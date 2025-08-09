@@ -11,7 +11,7 @@ import com.example.joytec.models.RegistroResponse;
 import retrofit2.*;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegistroActivity extends AppCompatActivity {
 
     private EditText etNombreUsuario, etCorreo, etContrasena, etConfirmarContrasena, etIdEmpleado;
     private Button btnRegister, btnGoToLogin;
@@ -31,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnGoToLogin = findViewById(R.id.btnGoToLogin);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.10.15:3001/api/")
+                .baseUrl("http://192.168.1.52:3001/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -40,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(v -> registrarUsuario());
 
         btnGoToLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            Intent intent = new Intent(RegistroActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         });
@@ -72,17 +72,17 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RegistroResponse> call, Response<RegistroResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(RegisterActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                    Toast.makeText(RegistroActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(RegistroActivity.this, LoginActivity.class));
                     finish();
                 } else {
-                    Toast.makeText(RegisterActivity.this, "Error: el usuario ya existe o la solicitud es inválida", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistroActivity.this, "Error: el usuario ya existe o la solicitud es inválida", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<RegistroResponse> call, Throwable t) {
-                Toast.makeText(RegisterActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(RegistroActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -1,20 +1,35 @@
 package com.example.joytec.models;
 
 public class LoginResponse {
-    private String mensaje;
-    private Usuario usuario;  // este es otro modelo que tú ya tienes
     private String token;
+    private String username;
+    private String rol;
 
-    // Constructor vacío requerido por Retrofit
+
     public LoginResponse() {}
 
-    // Getters y setters
-    public String getMensaje() { return mensaje; }
-    public void setMensaje(String mensaje) { this.mensaje = mensaje; }
 
-    public Usuario getUsuario() { return usuario; }
-    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
-
-    public String getToken() { return token; }
-    public void setToken(String token) { this.token = token; }
+    public LoginResponse(String token, String username, String rol) {
+        this.token = token;
+        this.username = username;
+        this.rol = rol;
+    }
+    public String getToken() {
+        return token;
+    }
+    public void setToken(String token) {
+        this.token = token;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public String getRol() {
+        return rol;
+    }
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
 }

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:id="@+id/main">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Joyeria Josselyn"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#9943C3"
+            android:layout_marginBottom="16dp"
+            android:gravity="right"/>
+
+        <TextView
+            android:id="@+id/tvTituloRegistrarProductos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registrar producto"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="22dp"
+            android:textColor="#222222"/>
+
+        <TextView
+            android:layout_width="250dp"
+            android:textSize="20sp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Nombre del producto"/>
+        <EditText
+            android:id="@+id/etNombre"
+            android:layout_width="300dp"
+            android:textSize="18sp"
+            android:layout_marginBottom="15dp"
+            android:layout_height="wrap_content"
+            android:hint="Ingrese nombre"/>
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="20sp"
+            android:layout_height="wrap_content"
+            android:text="Material"/>
+        <Spinner
+            android:id="@+id/spinnerMaterial"
+            android:textSize="18sp"
+            android:layout_marginBottom="15dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="Precio"/>
+        <EditText
+            android:id="@+id/etPrecio"
+            android:layout_width="300dp"
+            android:layout_marginBottom="15dp"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:hint="Ingrese precio"
+            android:inputType="numberDecimal"/>
+
+        <TextView
+            android:layout_width="200dp"
+            android:textSize="20sp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:text="Stock mínimo"/>
+        <EditText
+            android:id="@+id/etStockMin"
+            android:layout_width="300dp"
+            android:layout_marginBottom="15dp"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:hint="Ingrese stock mínimo"
+            android:inputType="number"/>
+
+        <TextView
+            android:layout_width="200dp"
+            android:textSize="20sp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:text="Existencias"/>
+        <EditText
+            android:id="@+id/etExistencias"
+            android:layout_width="300dp"
+            android:layout_marginBottom="15dp"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:hint="Ingrese existencias actuales"
+            android:inputType="number"/>
+
+        <TextView
+            android:layout_width="200dp"
+            android:textSize="20sp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:text="Categoría"/>
+        <Spinner
+            android:id="@+id/spinnerCategoria"
+            android:textSize="18sp"
+            android:layout_marginBottom="15dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/btnGuardar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Guardar"
+                android:backgroundTint="#43C37B"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:layout_marginEnd="8dp"
+                android:padding="12dp"/>
+
+            <Button
+                android:id="@+id/btnCancelar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancelar"
+                android:backgroundTint="#F44336"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:layout_marginStart="8dp"
+                android:padding="12dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

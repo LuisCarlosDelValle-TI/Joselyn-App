@@ -32,7 +32,8 @@ android {
 }
 
 dependencies {
-
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    implementation("androidx.fragment:fragment:1.6.1")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")

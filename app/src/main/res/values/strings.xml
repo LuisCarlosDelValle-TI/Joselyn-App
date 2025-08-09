@@ -1,4 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Joytec</string>
-    <string name="logo_description">Logo de la aplicación</string>
-</resources>
+
+        <string name="app_name">Joytec</string>
+
+        <string name="navigation_drawer_open">Abrir menú de navegación</string>
+        <string name="navigation_drawer_close">Cerrar menú de navegación</string>
+        <string name="nav_header_title">Joyería Josselyn</string>
+        <string name="menu_dashboard">Inicio</string>
+        <string name="menu_listar_productos">Listar Productos</string>
+        <string name="menu_registrar_producto">Registrar Producto</string>
+        <string name="menu_registrar_empleado">Registrar Empleado</string>
+        <string name="menu_section_cuenta">Cuenta</string>
+        <string name="menu_logout">Cerrar Sesión</string>
+        <string name="logo_description">Logotipo de la aplicacion Joytec</string>
+    </resources>

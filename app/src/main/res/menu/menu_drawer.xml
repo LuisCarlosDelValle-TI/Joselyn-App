@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_categorias" android:title="Categorías"/>
+        <item android:id="@+id/nav_clientes" android:title="Clientes"/>
+        <item android:id="@+id/nav_empleados" android:title="Empleados"/>
+        <item android:id="@+id/nav_productos" android:title="Productos"/>
+        <item android:id="@+id/nav_proveedores" android:title="Proveedores"/>
+        <item android:id="@+id/nav_usuarios" android:title="Usuarios"/>
+        <item android:id="@+id/nav_compras" android:title="Compras" />
+        <item android:id="@+id/nav_ventas" android:title="Ventas"/>
+    </group>
+
+
+    <item android:title="Cuenta">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:title="Cerrar Sesión" />
+        </menu>
+    </item>
+</menu>
