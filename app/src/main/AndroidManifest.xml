@@ -32,32 +32,8 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="false" />
 
-        <!-- MainActivity sin LAUNCHER -->
-        <activity
-            android:name=".activities.MainActivity"
-            android:exported="false" />
-
-        <!-- EmpleadosActivity sin LAUNCHER -->
-        <activity
-            android:name=".activities.empleados.EmpleadosActivity"
-            android:exported="false"
-            android:parentActivityName=".activities.MainActivity" />
-
-        <activity
-            android:name=".activities.empleados.RegistroEmpleadoActivity"
-            android:exported="false"
-            android:parentActivityName=".activities.empleados.EmpleadosActivity" />
-
-        <activity
-            android:name=".activities.productos.ProductosActivity"
-            android:exported="false"
-            android:parentActivityName=".activities.MainActivity" />
-
-        <activity
-            android:name=".activities.productos.RegistroProductoActivity"
-            android:exported="false"
-            android:parentActivityName=".activities.productos.ProductosActivity" />
-
+        <activity android:name=".activities.productos.ProductosActivity" />
+        <activity android:name=".activities.productos.FormularioProductoActivity" />
     </application>
 
 </manifest>

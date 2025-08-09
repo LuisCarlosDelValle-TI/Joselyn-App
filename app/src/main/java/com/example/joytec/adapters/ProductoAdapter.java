@@ -1,106 +1,81 @@
 package com.example.joytec.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.joytec.R;
-import com.example.joytec.models.ProductoResponse;
+import com.example.joytec.models.Producto;
 
 import java.util.List;
 
 public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder> {
 
-    private Context context;
-    private List<ProductoResponse> productos;
-    private OnProductoClickListener listener;
+    private List<Producto> productosList;
+    private final OnItemClickListener listener;
 
-    public interface OnProductoClickListener {
-        void onEditarClick(ProductoResponse producto);
-        void onEliminarClick(ProductoResponse producto);
-        void onDetallesClick(ProductoResponse producto);
+    // Interfaz para manejar clics en el botón de eliminar
+    public interface OnItemClickListener {
+        void onEliminarClick(Producto producto);
     }
 
-    public ProductoAdapter(Context context, List<ProductoResponse> productos) {
-        this.context = context;
-        this.productos = productos;
-    }
-
-    public void setOnProductoClickListener(OnProductoClickListener listener) {
+    // Constructor que ahora recibe el listener
+    public ProductoAdapter(List<Producto> productosList, OnItemClickListener listener) {
+        this.productosList = productosList;
         this.listener = listener;
     }
 
     @NonNull
     @Override
     public ProductoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.fragment_item_producto, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_producto, parent, false);
         return new ProductoViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductoViewHolder holder, int position) {
-        ProductoResponse producto = productos.get(position);
+        Producto producto = productosList.get(position);
+        holder.textViewNombre.setText(producto.getNombre());
+        holder.textViewPrecio.setText("Precio: $" + String.valueOf(producto.getPrecio()));
+        holder.textViewCategoria.setText("Categoría: " + producto.getNombre_categoria());
 
-        holder.tvNombre.setText(producto.getNombre());
-        holder.tvPrecio.setText("$" + String.valueOf(producto.getPrecio()));
-        holder.tvStock.setText("Stock: " + producto.getExistencias());
-        holder.tvCategoria.setText("Categoría: " + (producto.getNombre_categoria() != null ? producto.getNombre_categoria() : "Sin categoría"));
-
-        if (producto.getNombre_material() != null) {
-            holder.tvMaterial.setText("Material: " + producto.getNombre_material());
-            holder.tvMaterial.setVisibility(View.VISIBLE);
-        } else {
-            holder.tvMaterial.setVisibility(View.GONE);
-        }
-
-
-        holder.btnEditar.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onEditarClick(producto);
-            }
+        holder.buttonVerDetalle.setOnClickListener(v -> {
+            Toast.makeText(v.getContext(), "Ver detalle de: " + producto.getNombre(), Toast.LENGTH_SHORT).show();
         });
 
-        holder.btnEliminar.setOnClickListener(v -> {
+        // Llama al método de la interfaz cuando se hace clic en el botón
+        holder.buttonEliminar.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onEliminarClick(producto);
-            }
-        });
-
-        holder.btnDetalles.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onDetallesClick(producto);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return productos.size();
-    }
-
-    public void updateProductos(List<ProductoResponse> nuevosProductos) {
-        this.productos = nuevosProductos;
-        notifyDataSetChanged();
+        return productosList.size();
     }
 
     public static class ProductoViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNombre, tvPrecio, tvStock, tvCategoria, tvMaterial;
-        Button btnEditar, btnEliminar, btnDetalles;
+        TextView textViewNombre;
+        TextView textViewPrecio;
+        TextView textViewCategoria;
+        Button buttonVerDetalle;
+        Button buttonEliminar;
 
         public ProductoViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvNombre = itemView.findViewById(R.id.tvNombreProducto);
-            tvPrecio = itemView.findViewById(R.id.tvPrecioProducto);
-            tvStock = itemView.findViewById(R.id.tvStockProducto);;
-            btnEditar = itemView.findViewById(R.id.btnEditarProducto);
-            btnEliminar = itemView.findViewById(R.id.btnEliminar);
-
+            textViewNombre = itemView.findViewById(R.id.textViewNombre);
+            textViewPrecio = itemView.findViewById(R.id.textViewPrecio);
+            textViewCategoria = itemView.findViewById(R.id.textViewCategoria);
+            buttonVerDetalle = itemView.findViewById(R.id.buttonVerDetalle);
+            buttonEliminar = itemView.findViewById(R.id.buttonEliminar);
         }
     }
 }

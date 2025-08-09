@@ -7,7 +7,6 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.joytec.R;
-import com.example.joytec.activities.empleados.EmpleadosActivity;
 import com.example.joytec.activities.productos.ProductosActivity;
 import com.example.joytec.api.AuthApiService;
 import com.example.joytec.models.LoginRequest;
@@ -35,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Si ya está logueado, ir directo al MainActivity
         if (authRepository.isLoggedIn()) {
-            Intent intent = new Intent(LoginActivity.this, EmpleadosActivity.class);
+            Intent intent = new Intent(LoginActivity.this, ProductosActivity.class);
             startActivity(intent);
             finish();
             return;

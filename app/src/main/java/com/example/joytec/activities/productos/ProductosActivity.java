@@ -1,190 +1,127 @@
 package com.example.joytec.activities.productos;
 
-import android.app.AlertDialog;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
+import androidx.appcompat.widget.Toolbar;
+
+import com.example.joytec.activities.productos.FormularioProductoActivity;
 import com.example.joytec.R;
-import com.example.joytec.models.ProductoResponse;
+import com.example.joytec.adapters.ProductoAdapter;
+import com.example.joytec.models.Producto;
 import com.example.joytec.network.ApiClient;
+import com.example.joytec.network.ApiService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductosActivity extends AppCompatActivity {
+public class ProductosActivity extends AppCompatActivity implements ProductoAdapter.OnItemClickListener {
 
     private RecyclerView recyclerViewProductos;
-    private FloatingActionButton fabAgregarProducto;
-    private List<ProductoResponse> productos;
-    private ProductosAdapter adapter;
+    private ProductoAdapter adapter;
+    private ApiService apiService;
+    private FloatingActionButton fabAddProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_list_productos);
+        setContentView(R.layout.activity_productos);
 
-        initViews();
-        setupRecyclerView();
-        setupClickListeners();
-        cargarProductos();
-    }
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-    private void initViews() {
         recyclerViewProductos = findViewById(R.id.recyclerViewProductos);
-        fabAgregarProducto = findViewById(R.id.fab_agregar_producto);
-        productos = new ArrayList<>();
-    }
-
-    private void setupRecyclerView() {
-        adapter = new ProductosAdapter(productos);
         recyclerViewProductos.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewProductos.setAdapter(adapter);
-    }
 
-    private void setupClickListeners() {
-        fabAgregarProducto.setOnClickListener(v -> {
-            Intent intent = new Intent(ProductosActivity.this, RegistroProductoActivity.class);
-            startActivity(intent);
-        });
-    }
-
-    private void cargarProductos() {
-        Toast.makeText(this, "Cargando productos...", Toast.LENGTH_SHORT).show();
-
-        ApiClient.getApiService().getProductos().enqueue(new Callback<List<ProductoResponse>>() {
+        // Inicializa el FAB y su listener para ir al formulario de registro
+        fabAddProduct = findViewById(R.id.fabAddProduct);
+        fabAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<List<ProductoResponse>> call, Response<List<ProductoResponse>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    productos.clear();
-                    productos.addAll(response.body());
-                    adapter.notifyDataSetChanged();
-
-                    Toast.makeText(ProductosActivity.this,
-                            "Productos cargados: " + productos.size(), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ProductosActivity.this,
-                            "Error al cargar productos", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ProductoResponse>> call, Throwable t) {
-                Toast.makeText(ProductosActivity.this,
-                        "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            public void onClick(View view) {
+                Intent intent = new Intent(ProductosActivity.this, FormularioProductoActivity.class);
+                startActivity(intent);
             }
         });
+
+        apiService = ApiClient.getApiService();
+
+        fetchProductos();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        cargarProductos();
+        fetchProductos(); // Vuelve a cargar la lista cada vez que se regresa a la actividad
     }
 
-    // Adapter interno
-    private class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.ProductoViewHolder> {
-        private List<ProductoResponse> productos;
+    private void fetchProductos() {
+        Call<List<Producto>> call = apiService.getProductos();
 
-        public ProductosAdapter(List<ProductoResponse> productos) {
-            this.productos = productos;
-        }
-
-        @Override
-        public ProductoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.fragment_item_producto, parent, false);
-            return new ProductoViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(ProductoViewHolder holder, int position) {
-            ProductoResponse producto = productos.get(position);
-            holder.bind(producto);
-        }
-
-        @Override
-        public int getItemCount() {
-            return productos.size();
-        }
-
-        class ProductoViewHolder extends RecyclerView.ViewHolder {
-            TextView tvNombre, tvPrecio;
-            Button btnEditar, btnEliminar;
-
-            public ProductoViewHolder(View itemView) {
-                super(itemView);
-                tvNombre = itemView.findViewById(R.id.tvNombreProducto);
-                tvPrecio = itemView.findViewById(R.id.tvPrecioProducto);
-                btnEditar = itemView.findViewById(R.id.btnEditar);
-                btnEliminar = itemView.findViewById(R.id.btnEliminar);
+        call.enqueue(new Callback<List<Producto>>() {
+            @Override
+            public void onResponse(Call<List<Producto>> call, Response<List<Producto>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Producto> productosList = response.body();
+                    adapter = new ProductoAdapter(productosList, ProductosActivity.this);
+                    recyclerViewProductos.setAdapter(adapter);
+                } else {
+                    String errorMsg = "Error en la respuesta: " + response.message();
+                    Log.e("API_CALL_ERROR", errorMsg);
+                    Toast.makeText(ProductosActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
+                }
             }
 
-            public void bind(ProductoResponse producto) {
-                tvNombre.setText(producto.getNombre());
-                tvPrecio.setText("$" + producto.getPrecio());
-
-                btnEditar.setOnClickListener(v -> {
-                    Intent intent = new Intent(ProductosActivity.this, RegistroProductoActivity.class);
-                    intent.putExtra("producto_id", producto.getId_producto());
-                    intent.putExtra("modo_edicion", true);
-                    startActivity(intent);
-                });
-
-                btnEliminar.setOnClickListener(v -> {
-                    new AlertDialog.Builder(ProductosActivity.this)
-                            .setTitle("Eliminar Producto")
-                            .setMessage("¿Eliminar " + producto.getNombre() + "?")
-                            .setPositiveButton("Eliminar", (dialog, which) -> eliminarProducto(producto))
-                            .setNegativeButton("Cancelar", null)
-                            .show();
-                });
-
-                itemView.setOnClickListener(v -> {
-                    Intent intent = new Intent(ProductosActivity.this, RegistroProductoActivity.class);
-                    intent.putExtra("producto_id", producto.getId_producto());
-                    intent.putExtra("modo_edicion", true);
-                    startActivity(intent);
-                });
+            @Override
+            public void onFailure(Call<List<Producto>> call, Throwable t) {
+                String errorMsg = "Error de conexión: " + t.getMessage();
+                Log.e("API_CALL_FAILURE", errorMsg);
+                Toast.makeText(ProductosActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
             }
-        }
+        });
     }
 
-    private void eliminarProducto(ProductoResponse producto) {
-        ApiClient.getApiService().eliminarProducto(producto.getId_producto())
-                .enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (response.isSuccessful()) {
-                            Toast.makeText(ProductosActivity.this,
-                                    "Producto eliminado", Toast.LENGTH_SHORT).show();
-                            cargarProductos();
-                        } else {
-                            Toast.makeText(ProductosActivity.this,
-                                    "Error al eliminar producto", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+    @Override
+    public void onEliminarClick(Producto producto) {
+        new AlertDialog.Builder(this)
+                .setTitle("Confirmar eliminación")
+                .setMessage("¿Estás seguro de que quieres eliminar el producto " + producto.getNombre() + "?")
+                .setPositiveButton("Sí", (dialog, which) -> {
+                    eliminarProducto(producto);
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
 
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        Toast.makeText(ProductosActivity.this,
-                                "Error de conexión", Toast.LENGTH_SHORT).show();
-                    }
-                });
+    private void eliminarProducto(Producto producto) {
+        Call<Void> call = apiService.deleteProducto(producto.getId_producto());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(ProductosActivity.this, "Producto eliminado correctamente", Toast.LENGTH_SHORT).show();
+                    // Vuelve a cargar la lista para actualizar el RecyclerView
+                    fetchProductos();
+                } else {
+                    Toast.makeText(ProductosActivity.this, "Error al eliminar el producto", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(ProductosActivity.this, "Fallo en la conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -2,7 +2,7 @@ package com.example.joytec.repository;
 import com.example.joytec.network.ProductoService;
 import retrofit2.Call;
 import java.util.List;
-import com.example.joytec.models.ProductoResponse;
+import com.example.joytec.models.ProductosResponse;
 import com.example.joytec.models.ProductoRequest;
 import com.example.joytec.network.RetrofitClient;
 
@@ -13,11 +13,11 @@ public class ProductoRepository {
         productoService = RetrofitClient.getRetrofitInstance().create(ProductoService.class);
     }
 
-    public Call<List<ProductoResponse>> obtenerProductos() {
+    public Call<List<ProductosResponse>> obtenerProductos() {
         return productoService.obtenerProductos();
     }
 
-    public Call<ProductoResponse> registrarProducto(ProductoRequest request) {
+    public Call<ProductosResponse> registrarProducto(ProductoRequest request) {
         return productoService.registrarProducto(request);
     }
 
